@@ -19,7 +19,7 @@ This is a web-based tool that calculates and displays the current in-game time i
 **Credits**
 
 - Tool created by [Flamme1230](https://pokemonrevolution.net/forum/profile/614309-flamme1230/) (a.k.a. <ins>Fardust</ins>)
-- Made for and inspired from the MMORPG Pokémon Revolution Online (https://pokemonrevolution.net/)
+- Made for and inspired from the MMORPG [Pokémon Revolution Online](https://pokemonrevolution.net/)
 
 **License**
 
