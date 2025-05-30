@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PRO Time Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-morning: radial-gradient(ellipse at top, #ffeaa7, #fab1a0, #fd79a8);
+      --bg-day: radial-gradient(ellipse at top, #74b9ff, #0984e3, #a29bfe);
+      --bg-night: radial-gradient(ellipse at top, #2d3436, #636e72, #2c3e50);
+      --bg-midnight: radial-gradient(ellipse at top, #0c0c0c, #1a1a2e, #16213e);
+      
+      --accent-morning: #ff7675;
+      --accent-day: #00b894;
+      --accent-night: #a29bfe;
+      --accent-midnight: #fd79a8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      height: 100vh;
+      background: var(--bg-day);
+      transition: background 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Stellar background with twinkling stars */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 4s ease-in-out infinite;
+    }
+
+    .star.large {
+      width: 3px;
+      height: 3px;
+      animation-duration: 3s;
+    }
+
+    .star.small {
+      width: 1px;
+      height: 1px;
+      animation-duration: 5s;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
+
+    /* Digital rain effect */
+    .matrix-rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.1;
+    }
+
+    .matrix-char {
+      position: absolute;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      animation: matrixFall 8s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes matrixFall {
+      0% {
+        transform: translateY(-10vh);
+        opacity: 0;
+      }
+      5% {
+        opacity: 1;
+      }
+      95% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+    /* Floating particles - fixed */
+    .particles {
+    .pokeball {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(to bottom, #ff0000 50%, #ffffff 50%);
+      border: 3px solid #000;
+      opacity: 0.6;
+      animation: pokeBounce 6s ease-in-out infinite;
+    }
+
+    .pokeball::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border: 2px solid #000;
+      border-radius: 50%;
+    }
+
+    .pokeball::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #000;
+      transform: translateY(-50%);
+    }
+
+    @keyframes pokeBounce {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(90deg); }
+      50% { transform: translateY(0px) rotate(180deg); }
+      75% { transform: translateY(-10px) rotate(270deg); }
+    }
+
+    .pokeball-1 {
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .pokeball-2 {
+      top: 70%;
+      right: 8%;
+      animation-delay: 2s;
+    }
+
+    .pokeball-3 {
+      bottom: 15%;
+      left: 10%;
+      animation-delay: 4s;
+    }
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: float 20s infinite linear;
+      opacity: 0;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(110vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Main container */
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3rem 2rem;
+      border-radius: 30px;
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      text-align: center;
+      width: 90%;
+      max-width: 480px;
+      position: relative;
+      z-index: 10;
+      animation: containerPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes containerPulse {
+      0%, 100% {
+        box-shadow: 
+          0 25px 50px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2),
+          0 0 0 rgba(0, 255, 255, 0);
+      }
+      50% {
+        box-shadow: 
+          0 25px 50px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2),
+          0 0 30px rgba(0, 255, 255, 0.3);
+      }
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .title {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+      background-size: 200% 200%;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 300;
+      letter-spacing: 2px;
+    }
+
+    /* Time display */
+    .time-display {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 2rem;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .time-display::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .current-time {
+      font-family: 'Orbitron', monospace;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #00ffff;
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+      margin-bottom: 1rem;
+      animation: timePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes timePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .phase-indicator {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: var(--accent-day);
+      border-radius: 50px;
+      font-weight: 600;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      animation: phaseGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes phaseGlow {
+      0% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+      100% { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-day); }
+    }
+
+    /* Info cards */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1.5rem 1rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .info-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-day), transparent);
+      animation: cardGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes cardGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .info-label {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+
+    .info-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #00ffcc;
+      text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    }
+
+    /* Phase-specific styles */
+    .phase-morning {
+      --accent-day: var(--accent-morning);
+    }
+
+    .phase-day {
+      --accent-day: var(--accent-day);
+    }
+
+    .phase-night {
+      --accent-day: var(--accent-night);
+    }
+
+    .phase-midnight {
+      --accent-day: var(--accent-midnight);
+    }
+
+    /* Clock decoration */
+    .clock-decoration {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--accent-day);
+      border-radius: 50%;
+      animation: clockSpin 10s linear infinite;
+    }
+
+    @keyframes clockSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 600px) {
+      .container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      
+      .title {
+        font-size: 1.8rem;
+      }
+      
+      .current-time {
+        font-size: 2.2rem;
+      }
+      
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+      }
+      
+      .info-card {
+        padding: 1.2rem 0.8rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .title {
+        font-size: 1.5rem;
+      }
+      
+      .current-time {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="matrix-rain" id="matrixRain"></div>
+  <div class="stars" id="stars"></div>
+  <div class="particles" id="particles"></div>
+  
+  <!-- Pokéball decorations -->
+  <div class="pokeball pokeball-1"></div>
+  <div class="pokeball pokeball-2"></div>
+  <div class="pokeball pokeball-3"></div>
+  
+  <div class="container">
+    <div class="clock-decoration"></div>
+    
+    <div class="header">
+      <h1 class="title">PRO TIME</h1>
+      <p class="subtitle">REVOLUTION ONLINE</p>
+    </div>
+
+    <div class="time-display">
+      <div class="current-time" id="proTime">00:00</div>
+      <div class="phase-indicator" id="phase">Loading...</div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-label">Until Midnight</div>
+        <div class="info-value" id="untilMidnight">--h --m</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Next Phase</div>
+        <div class="info-value" id="untilNextPhase">--h --m</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const anchorReal = new Date("2025-05-29T21:00:00Z");
+    const anchorProMinutes = 9 * 60;
+
+    // Create twinkling stars
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        const size = Math.random() > 0.8 ? 'large' : Math.random() > 0.6 ? 'small' : '';
+        star.className = `star ${size}`;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 4 + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+
+    // Create matrix rain effect
+    function createMatrixRain() {
+      const matrixContainer = document.getElementById('matrixRain');
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      
+      for (let i = 0; i < 30; i++) {
+        const char = document.createElement('div');
+        char.className = 'matrix-char';
+        char.textContent = chars[Math.floor(Math.random() * chars.length)];
+        char.style.left = Math.random() * 100 + '%';
+        char.style.animationDelay = Math.random() * 8 + 's';
+        char.style.animationDuration = (Math.random() * 4 + 6) + 's';
+        matrixContainer.appendChild(char);
+      }
+    }
+
+    // Create floating particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 20 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    function updateTime() {
+      const now = new Date();
+      const elapsedRealSeconds = (now - anchorReal) / 1000;
+      const elapsedProSeconds = elapsedRealSeconds * 5;
+      const totalProMinutes = anchorProMinutes + Math.floor(elapsedProSeconds / 60);
+      const proHour = Math.floor((totalProMinutes / 60) % 24);
+      const proMinute = totalProMinutes % 60;
+
+      const pad = (n) => n.toString().padStart(2, '0');
+      document.getElementById("proTime").textContent = `${pad(proHour)}:${pad(proMinute)}`;
+
+      // Determine phase and styling
+      let phase, nextPhaseHour, bg, phaseClass;
+      if (proHour >= 4 && proHour < 10) {
+        phase = "Morning";
+        nextPhaseHour = 10;
+        bg = 'var(--bg-morning)';
+        phaseClass = 'phase-morning';
+      } else if (proHour >= 10 && proHour < 20) {
+        phase = "Day";
+        nextPhaseHour = 20;
+        bg = 'var(--bg-day)';
+        phaseClass = 'phase-day';
+      } else if (proHour >= 20 || proHour < 0) {
+        phase = "Night";
+        nextPhaseHour = 0;
+        bg = 'var(--bg-night)';
+        phaseClass = 'phase-night';
+      } else {
+        phase = "Midnight";
+        nextPhaseHour = 4;
+        bg = 'var(--bg-midnight)';
+        phaseClass = 'phase-midnight';
+      }
+
+      // Update phase display and styling
+      document.getElementById("phase").textContent = phase;
+      document.body.style.background = bg;
+      document.body.className = phaseClass;
+
+      // Time until midnight
+      const currentMinutes = proHour * 60 + proMinute;
+      let untilMidnight = (1440 - currentMinutes) % 1440;
+      const realMidnightSeconds = untilMidnight * 12;
+      const hrMid = Math.floor(realMidnightSeconds / 3600);
+      const minMid = Math.floor((realMidnightSeconds % 3600) / 60);
+      document.getElementById("untilMidnight").textContent = `${hrMid}h ${minMid}m`;
+
+      // Time until next phase
+      let nextPhaseMinutes = nextPhaseHour * 60;
+      if (nextPhaseMinutes <= currentMinutes) nextPhaseMinutes += 1440;
+      const untilNextPhase = nextPhaseMinutes - currentMinutes;
+      const realNextPhaseSeconds = untilNextPhase * 12;
+      const hrNext = Math.floor(realNextPhaseSeconds / 3600);
+      const minNext = Math.floor((realNextPhaseSeconds % 3600) / 60);
+      document.getElementById("untilNextPhase").textContent = `${hrNext}h ${minNext}m`;
+    }
+
+    // Initialize all effects
+    createStars();
+    createMatrixRain();
+    createParticles();
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>
