@@ -16,13 +16,9 @@ This is a web-based tool that calculates and displays the current in-game time i
 - Shows countdown to the next phase
 - Automatically updates every second
 
-**Usage**
-
-You can run this tool by simply opening the `phasepoke.html` file in your browser. Useful when needing to complete objectives at a certain time.
-
 **Credits**
 
-- Tool created by [Flamme1230] (a.k.a. [Fardust])
+- Tool created by <ins>Flamme1230</ins> (a.k.a. <ins>Fardust</ins>)
 - Made for and inspired from the MMORPG Pokémon Revolution Online (https://pokemonrevolution.net/)
 
 **License**
